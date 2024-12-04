@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AppContextProvider } from "./context/AppContext";
 import "./globals.css";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/footer";
@@ -40,9 +41,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${dmSans.className} antialiased min-h-screen`}>
-        <Navbar />
-        <div className="min-h-screen">{children}</div>
-        <Footer />
+        <AppContextProvider>
+          <GoogleOAuthProvider clientId="390835727076-oi0s6892ugmc8tmtm3edrd07e019o02s.apps.googleusercontent.com">
+            <Navbar />
+            {children}
+            <Footer />
+          </GoogleOAuthProvider>
+        </AppContextProvider>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { getMonth } from "./getTime";
+import { weekEvents } from "./data";
 
 export const useViewStore = create()(
   devtools(
@@ -37,7 +38,7 @@ export const useDateStore = create()(
 );
 
 export const useEventStore = create((set) => ({
-  events: [],
+  events: [...weekEvents],
   isPopoverOpen: false,
   isEventSummaryOpen: false,
   selectedEvent: null,

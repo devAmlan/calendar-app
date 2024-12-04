@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useDateStore } from "@/lib/store";
 
-function AddTime({ onTimeSelect }) {
+function AddTime({ onTimeSelect, timeKey }) {
   const [selectedTime, setSelectedTime] = useState("00:00");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -22,6 +23,8 @@ function AddTime({ onTimeSelect }) {
     };
   }, []);
 
+  const compareTime = () => {};
+
   const generateTimeIntervals = () => {
     const intervals = [];
     for (let hour = 0; hour < 24; hour++) {
@@ -38,7 +41,7 @@ function AddTime({ onTimeSelect }) {
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
-    onTimeSelect(time);
+    onTimeSelect(timeKey, time);
     setIsOpen(false);
   };
 

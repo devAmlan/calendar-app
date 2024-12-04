@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import { getHours, getWeekDays } from "@/lib/getTime";
 import { useDateStore, useEventStore } from "@/lib/store";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Event from "../event/Event";
 
 function WeekView() {
+  const [currentTime, setCurrentTime] = useState(dayjs());
+
   const { openPopover, events } = useEventStore();
   const { userSelectedDate, setDate } = useDateStore();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(dayjs());
+    }, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -53,8 +64,19 @@ function WeekView() {
                         setDate(dayDate.hour(hour.hour()));
                         openPopover();
                       }}
-                    ></div>
+                    >
+                      <Event date={dayDate.hour(hour.hour())} events={events} />
+                    </div>
                   ))}
+
+                  {isCurrentDay(dayDate) && today && (
+                    <div
+                      className={"absolute h-0.5 w-full bg-red-500"}
+                      style={{
+                        top: `${(currentTime.hour() / 24) * 100}%`,
+                      }}
+                    />
+                  )}
                 </div>
               );
             }
