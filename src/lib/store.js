@@ -50,3 +50,10 @@ export const useEventStore = create((set) => ({
   closeEventSummary: () =>
     set({ isEventSummaryOpen: false, selectedEvent: null }),
 }));
+
+export const useShiftStore = create((set) => ({
+  title: "",
+  startTime: dayjs(),
+  endTime: dayjs(),
+  setShift: (value) => set((state) => ({ ...state, ...value })),
+}));

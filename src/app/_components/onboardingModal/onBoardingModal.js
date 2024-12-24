@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
+import { CircleChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 
 const initialState = {
@@ -23,7 +23,11 @@ const getStepContent = (setState) => {
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <p>Step 1 of 3</p>
+        <div className="flex justify-start items-center gap-2">
+          <CircleChevronLeft className="cursor-not-allowed opacity-35" />
+          <p>Step 1 of 3</p>
+        </div>
+
         <div className="flex flex-col gap-4 my-8">
           <h2 className="text-4xl font-extrabold">
             What's the name of your company or team?
@@ -51,7 +55,13 @@ const getStepContent = (setState) => {
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <p>Step 2 of 3</p>
+        <div className="flex justify-start items-center gap-2">
+          <CircleChevronLeft
+            className="cursor-pointer"
+            onClick={() => setState("step_one")}
+          />
+          <p>Step 2 of 3</p>
+        </div>
         <div className="flex flex-col gap-4 my-8">
           <h2 className="text-4xl font-extrabold">What's your name?</h2>
         </div>
@@ -76,7 +86,13 @@ const getStepContent = (setState) => {
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <p>Step 3 of 3</p>
+        <div className="flex justify-start items-center gap-2">
+          <CircleChevronLeft
+            className="cursor-pointer"
+            onClick={() => setState("step_two")}
+          />
+          <p>Step 3 of 3</p>
+        </div>
         <div className="flex flex-col gap-2 my-8">
           <h2 className="text-4xl font-extrabold">Who else is on your team</h2>
         </div>

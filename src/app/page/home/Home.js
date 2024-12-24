@@ -26,7 +26,7 @@ function Home() {
             manage shifts. Boost your team’s productivity and ensure smooth
             operations.
           </p>
-          <Button className="flex justify-center items-center gap-3 font-bold">
+          <Button className="flex justify-center items-center gap-3 font-bold hover:scale-110 transition ease-in-out delay-300">
             Try Tymer For Free
             <ArrowRight />
           </Button>

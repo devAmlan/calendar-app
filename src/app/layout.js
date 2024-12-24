@@ -5,6 +5,7 @@ import { AppContextProvider } from "./context/AppContext";
 import "./globals.css";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/footer";
+import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,14 +41,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${dmSans.className} antialiased min-h-screen`}>
-        <AppContextProvider>
-          <GoogleOAuthProvider clientId="390835727076-oi0s6892ugmc8tmtm3edrd07e019o02s.apps.googleusercontent.com">
-            <Navbar />
-            {children}
-            <Footer />
-          </GoogleOAuthProvider>
-        </AppContextProvider>
+      <body className={`${dmSans.className} antialiased`}>
+        <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+          <ReactQueryProvider>
+            <AppContextProvider>
+              <Navbar />
+              <main className="min-h-screen">{children}</main>
+              <Footer />
+            </AppContextProvider>
+          </ReactQueryProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

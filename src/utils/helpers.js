@@ -1,5 +1,8 @@
 export function getAuthToken() {
-  return localStorage.getItem("authToken");
+  if (typeof window !== "undefined" && window.localStorage) {
+    return localStorage.getItem("authToken");
+  }
+  return null;
 }
 export function isLoggedIn() {
   if (getAuthToken()) return true;

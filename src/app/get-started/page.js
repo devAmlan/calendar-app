@@ -2,7 +2,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="w-full min-h-screen flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <div className="md:w-3/4 w-full flex justify-between items-center gap-8 md:flex-row flex-col">
         <div className="flex md:w-1/2 flex-col justify-center items-start gap-6">
           <h1 className="text-4xl font-extrabold text-primary">

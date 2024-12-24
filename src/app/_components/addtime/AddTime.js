@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
-import { useDateStore } from "@/lib/store";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import dayjs from "dayjs";
 
-function AddTime({ onTimeSelect, timeKey }) {
+function AddTime({ onTimeSelect, timeKey, value, compareTime }) {
   const [selectedTime, setSelectedTime] = useState("00:00");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -23,27 +23,29 @@ function AddTime({ onTimeSelect, timeKey }) {
     };
   }, []);
 
-  const compareTime = () => {};
-
   const generateTimeIntervals = () => {
     const intervals = [];
     for (let hour = 0; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
-        intervals.push(
-          `${hour.toString().padStart(2, "0")}:${minute
+        intervals.push({
+          hour,
+          minute,
+          timeString: `${hour.toString().padStart(2, "0")}:${minute
             .toString()
-            .padStart(2, "0")}`
-        );
+            .padStart(2, "0")}`,
+          time: dayjs().hour(hour).minute(minute).second(0),
+        });
       }
     }
     return intervals;
   };
 
   const handleTimeSelect = (time) => {
-    setSelectedTime(time);
-    onTimeSelect(timeKey, time);
+    onTimeSelect({ name: timeKey, value: time });
     setIsOpen(false);
   };
+
+  const now = new Date();
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -52,23 +54,45 @@ function AddTime({ onTimeSelect, timeKey }) {
         className="w-24 justify-between"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedTime}
-        <ChevronDown className="size-4 opacity-50" />
+        {value.format("HH:mm")}
+        {isOpen ? (
+          <ChevronUp className="size-4 opacity-50" />
+        ) : (
+          <ChevronDown className="size-4 opacity-50" />
+        )}
       </Button>
       {isOpen && (
         <div className="absolute z-50 mt-2 w-24 rounded-md border bg-popover text-popover-foreground shadow-md">
           <ScrollArea className="h-60">
             <div className="p-1">
-              {generateTimeIntervals().map((time) => (
-                <Button
-                  key={time}
-                  variant="ghost"
-                  className="w-full justify-start"
-                  onClick={() => handleTimeSelect(time)}
-                >
-                  {time}
-                </Button>
-              ))}
+              {generateTimeIntervals().map((item, index) => {
+                // const isDisabled =
+                //   item?.hour < now.getHours() ||
+                //   (item?.hour === now.getHours() &&
+                //     item?.minute < now.getMinutes()) ||
+                //   dayjs()
+                //     .hour(item?.hour)
+                //     .minute(item?.minute)
+                //     .second(0)
+                //     .isBefore(compareTime) ||
+                //   dayjs()
+                //     .hour(item?.hour)
+                //     .minute(item?.minute)
+                //     .second(0)
+                //     .isSame(compareTime);
+
+                return (
+                  <Button
+                    key={index}
+                    variant="ghost"
+                    className={"w-full justify-start"}
+                    onClick={() => handleTimeSelect(item?.time)}
+                    // disabled={isDisabled}
+                  >
+                    {item?.timeString}
+                  </Button>
+                );
+              })}
             </div>
           </ScrollArea>
         </div>
