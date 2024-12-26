@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CheckIcon, ChevronDown } from "lucide-react";
+import { CheckIcon, ChevronDown, X } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -18,15 +18,33 @@ import { Button } from "@/components/ui/button";
 import _ from "lodash";
 
 function MultiSelect(props) {
-  const { options, toggleOptions, selectedOptions } = props;
+  const { options, toggleOptions, selectedOptions, removeOption } = props;
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button className="flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto">
           <div className="flex items-center justify-between w-full mx-auto">
-            <span className="text-sm text-muted-foreground mx-3">
-              Select Team Members
+            <span className="text-sm text-muted-foreground mx-3 flex justify-start items-center flex-wrap gap-1">
+              {_.isEmpty(selectedOptions)
+                ? "Select Team Members"
+                : _.map(_.slice(selectedOptions, 0, 3), (item) => (
+                    <span
+                      key={item?._id}
+                      className="bg-primary text-white px-2 py-1 border-0 rounded-full flex justify-between items-center gap-2"
+                    >
+                      {item?.name}
+                      <X
+                        className="size-4"
+                        onClick={() => removeOption(item)}
+                      />
+                    </span>
+                  ))}
+              {_.size(selectedOptions) > 3 && (
+                <span className="bg-primary text-white px-2 py-1 border-0 rounded-full flex justify-between items-center gap-2">
+                  +{_.size(selectedOptions) - 3} more
+                </span>
+              )}
             </span>
             <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
           </div>
@@ -39,7 +57,8 @@ function MultiSelect(props) {
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Team Members">
               {_.map(options, (item) => {
-                const isSelected = selectedOptions.some(
+                const isSelected = _.some(
+                  selectedOptions,
                   (member) => member?._id === item?._id
                 );
 

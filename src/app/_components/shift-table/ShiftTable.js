@@ -15,11 +15,40 @@ export const MEMBERS = [
     name: "Amlan sahoo",
     email: "amlan@gmail.com",
   },
+  {
+    _id: "0340304ksllfnsdds1",
+    name: "Rahul pradhan",
+    email: "rahul@gmail.com",
+  },
+  {
+    _id: "0340304ksllfnsdds2",
+    name: "Ankit jha",
+    email: "amlan@gmail.com",
+  },
+  {
+    _id: "0340304ksllfnsdds3",
+    name: "Bruce wane",
+    email: "amlan@gmail.com",
+  },
+  {
+    _id: "0340304ksllfnsdds4",
+    name: "Spider man",
+    email: "amlan@gmail.com",
+  },
 ];
+
+const initialState = {
+  title: "",
+  startTime: "",
+  endTime: "",
+  members: [],
+};
 
 function ShiftTable() {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [shifts, setShifts] = useState([]);
+  const [shift, setShift] = useState(initialState);
 
   const { Fn } = useShiftTable();
   const { getCurrentWeek, formatDate } = Fn;
@@ -98,12 +127,17 @@ function ShiftTable() {
           </div>
         </div>
       ))}
-      <EventPopover
-        isOpen={open}
-        onClose={onClose}
-        date={dayjs(selectedDate)}
-        options={MEMBERS}
-      />
+      {open && (
+        <EventPopover
+          isOpen={open}
+          onClose={onClose}
+          date={dayjs(selectedDate)}
+          options={MEMBERS}
+          setShifts={setShifts}
+          shift={shift}
+          setShift={setShift}
+        />
+      )}
     </div>
   );
 }
